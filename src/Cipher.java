@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class Cipher {
 
   public static final String UPPER_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -8,6 +12,11 @@ public class Cipher {
     String command = args[0];
     int key = Integer.parseInt(args[1]);
     String msg = args[2];
+
+    File file = new File(msg);
+    if (file.isFile()) {
+      msg = readFileContent(file);
+    }
 
     if (args.length < 3) {
       System.out.println("Not enough commands");
@@ -89,5 +98,23 @@ public class Cipher {
     }
 
     return cipherText;
+  }
+
+  private static String readFileContent(File file) {
+    String content = null;
+    
+    try {
+      Scanner scanner = new Scanner(file);
+      while (scanner.hasNextLine()) {
+        content = scanner.nextLine();
+      }
+      scanner.close();
+
+      return content;
+    } catch (FileNotFoundException e) {
+      System.out.println("Can not find the file called " + file.getName());
+    }
+
+    return content;
   }
 }
